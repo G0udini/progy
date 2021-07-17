@@ -1,0 +1,4 @@
+This script is created and used to help to count the size of arrival traffic patterns('Trombon\Veer') in civil aviation. 
+It uses only basic knowledge of chart creation and statistics and should not be used at official projects.
+
+It requests for count of aircraft per merge point of traffic pattern and give information about the distance of active part of the pattern. 
