@@ -1,12 +1,14 @@
 import math
 
+
 POINT_COUNT = 6
 DISTANCE = 10
 MATH_WAIT = 0.05
 
 
 def main():
-    object_ex = input("Выполнить расчет для [t/v]: ")
+
+    object_type = input("Выполнить расчет для [t/v]: ")
     planes_per_point = input("ВС/час = ").split()
     planes_list = [int(plane) for plane in planes_per_point]
 
@@ -20,10 +22,7 @@ def main():
     km = input(
         "Введите интервал в (км), если он "
         "отличается от стандартного значения = ")
-    if km:
-        km = int(km)
-    else:
-        km = DISTANCE
+    km = int(km) if km else DISTANCE
 
     sum_stream = sum(planes_list)
     print(f"Суммарная часовая ИВД равна: {sum_stream} вс/час.")
@@ -47,7 +46,7 @@ def main():
         var_list.sort()
         p_obs = round(var_list[-1] * var_list[-2] * math.comb(6, 2), 4)
         print(f"Наибольшая вероятность: {p_obs} \n")
-        
+
         list_for_change = [[k, v] for k, v in enumerate(planes_list)]
         list_for_change.sort(key=lambda x: x[1])
         list_for_change[-1][1] -= 1
@@ -55,18 +54,24 @@ def main():
         for ind, change in list_for_change:
             planes_list[ind] = change
 
-    if object_ex == "t":
-        res_distance = iteration * 5
-        object_name = "тромбон"
-    elif object_ex == "v":
-        res_distance = iteration * 10
-        object_name = "веер"
+    res_distance, object_name = distance_definition(iteration, object_type)
+
+    if object_name:
+        print(f"Окончательная длина для {object_name}а\
+составляет: {res_distance} км")
+
+
+def distance_definition(iteration, object_type):
+    """In case of different object, return appropriate distance"""
+
+    if object_type == "t":
+        return iteration * 5, "тромбон"
+    elif object_type == "v":
+        return iteration * 10, "веер"
     else:
         print("Неизвестный объект")
-        return
-
-    print(f"Окончательная длина для {object_name}а"
-          f"составляет: {res_distance} км")
+        return iteration, None
 
 
-main()
+if __name__ == '__main__':
+    main()
