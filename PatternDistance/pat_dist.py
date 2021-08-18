@@ -6,29 +6,22 @@ DISTANCE = 10
 MATH_WAIT = 0.05
 
 
-def main():
+def define_distance(iteration, object_type):
+    """In case of different object, return appropriate distance"""
 
-    object_type = input("Выполнить расчет для [t/v]: ")
-    planes_per_point = input("ВС/час = ").split()
-    planes_list = [int(plane) for plane in planes_per_point]
+    if object_type == "t":
+        return iteration * 5, "тромбон"
+    elif object_type == "v":
+        return iteration * 10, "веер"
+    else:
+        print("Неизвестный объект")
+        return iteration, None
 
-    if len(planes_list) > POINT_COUNT:
-        print("Колличество введенных точек превышает допустимое значение")
-        return
-    if len(planes_list) < 3:
-        print("Недостаточно точек для вычисления")
-        return
 
-    km = input(
-        "Введите интервал в (км), если он "
-        "отличается от стандартного значения = ")
-    km = int(km) if km else DISTANCE
+def iterate_points(planes_list, tim) -> int:
+    """Use iteration method to calculate the probability
+    of the presence of two or more aircraft on the same distance"""
 
-    sum_stream = sum(planes_list)
-    print(f"Суммарная часовая ИВД равна: {sum_stream} вс/час.")
-    tim = 60 / 300 * km
-    print(
-        f"Определяем вероятности попадания на {km} км-й участок каждого ВС:")
     p_obs = float("inf")
     iteration = 0
 
@@ -53,25 +46,40 @@ def main():
         list_for_change[-2][1] -= 1
         for ind, change in list_for_change:
             planes_list[ind] = change
+    return iteration
 
-    res_distance, object_name = distance_definition(iteration, object_type)
+
+def main():
+    """Script to calculate the appropriate safe distance for traffic pattern"""
+
+    object_type = input("Выполнить расчет для [t/v]: ")
+    planes_per_point = input("ВС/час = ").split()
+    planes_list = [int(plane) for plane in planes_per_point]
+
+    if len(planes_list) > POINT_COUNT:
+        print("Колличество введенных точек превышает допустимое значение")
+        return
+    if len(planes_list) < 3:
+        print("Недостаточно точек для вычисления")
+        return
+
+    km = input(
+        "Введите интервал в (км), если он " "отличается от стандартного значения = "
+    )
+    km = int(km) if km else DISTANCE
+
+    sum_stream = sum(planes_list)
+    print(f"Суммарная часовая ИВД равна: {sum_stream} вс/час.")
+    tim = 60 / 300 * km
+    print(f"Определяем вероятности попадания на {km} км-й участок каждого ВС:")
+
+    iteration = iterate_points(planes_list, tim)
+
+    res_distance, object_name = define_distance(iteration, object_type)
 
     if object_name:
-        print(f"Окончательная длина для {object_name}а\
-составляет: {res_distance} км")
+        print(f"Окончательная длина для {object_name}а составляет: {res_distance} км")
 
 
-def distance_definition(iteration, object_type):
-    """In case of different object, return appropriate distance"""
-
-    if object_type == "t":
-        return iteration * 5, "тромбон"
-    elif object_type == "v":
-        return iteration * 10, "веер"
-    else:
-        print("Неизвестный объект")
-        return iteration, None
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
