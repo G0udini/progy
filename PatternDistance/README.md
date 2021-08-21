@@ -5,7 +5,6 @@ It uses only basic knowledge of chart creation and statistics and should not be 
 
 It requires for the number of aircraft per merge point of a traffic pattern.
 And gives information about the distance of active part of the pattern. 
-____
 
 ## How to use the script:
 1. Clone the script from github (git clone https://github.com/G0udini/progy.git)
