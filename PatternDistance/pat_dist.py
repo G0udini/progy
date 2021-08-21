@@ -18,7 +18,21 @@ def define_distance(iteration, object_type):
         return iteration, None
 
 
-def iterate_points(planes_list, tim) -> int:
+def calculate_puasson(point, tim):
+    """Use formula to calculate puasson distribution"""
+    a = point / 60 * tim
+    a = round(a, 2)
+    return round(a * math.exp(-a), 4)
+
+
+def decrement_last(planes_list):
+    """Decrement two last distinct values in the list inplace"""
+    list_for_change = [[val, ind] for ind, val in enumerate(planes_list)]
+    for decr in sorted(list_for_change)[-2:]:
+        planes_list[decr[1]] -= 1
+
+
+def iterate_points(planes_list, tim):
     """Use iteration method to calculate the probability
     of the presence of two or more aircraft on the same distance"""
 
@@ -29,23 +43,17 @@ def iterate_points(planes_list, tim) -> int:
         iteration += 1
         print(f"{iteration} итерация:")
         var_list = []
-        for point in range(len(planes_list)):
-            a = planes_list[point] / 60 * tim
-            a = round(a, 2)
-            p = round(a * math.exp(-a), 4)
-            var_list.append(p)
-            print(f"{p} / {planes_list[point]}")
+        for point in planes_list:
+            puasson = calculate_puasson(point, tim)
+            var_list.append(puasson)
+            print(f"{puasson} / {point}")
 
         var_list.sort()
         p_obs = round(var_list[-1] * var_list[-2] * math.comb(6, 2), 4)
         print(f"Наибольшая вероятность: {p_obs} \n")
 
-        list_for_change = [[k, v] for k, v in enumerate(planes_list)]
-        list_for_change.sort(key=lambda x: x[1])
-        list_for_change[-1][1] -= 1
-        list_for_change[-2][1] -= 1
-        for ind, change in list_for_change:
-            planes_list[ind] = change
+        decrement_last(planes_list)
+
     return iteration
 
 
