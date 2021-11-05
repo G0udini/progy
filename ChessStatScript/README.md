@@ -12,9 +12,9 @@ In particular, 2 functions are implemented:
 3. Run the script using venv: ```python3 data_scrap.py```
 4. Input the username of an existing account
 5. The script will show information in 3 columns:
-a. Full name of the gambit with a clickable link to chess.com analyzer 
-b. The number of matches in which this gambit was played by the user 
-c. Average user winrate
+    1. Full name of the gambit with a clickable link to chess.com analyzer 
+    2. The number of matches in which this gambit was played by the user 
+    3. Average user winrate
 
 ## Example:
-![](/example.png)
+![example](/ChessStatScript/example.png)
